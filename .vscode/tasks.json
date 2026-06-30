@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build & Run C++",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "g++ \"${file}\" -o \"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe\" && \"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe\""
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
