@@ -11,13 +11,15 @@ struct Student
     int id;
 };
 
-Student students[5];
+const int MAX_STUDENT = 5;
 
-int student_count = 0;
+Student students[MAX_STUDENT];
 
-void add_students()
+int studentCount = 0;
+
+void addStudents()
 {
-    if (student_count>=5)
+    if (studentCount>=MAX_STUDENT)
     {
         cout << "Sorry! the list is full, can't store more.";
 
@@ -29,24 +31,24 @@ void add_students()
     else
     {
         cout << "Enter Name: ";
-        cin >> students[student_count].name;
+        cin >> students[studentCount].name;
 
         cout << "\n";
 
         cout << "Enter Age: ";
-        cin >> students[student_count].age;
+        cin >> students[studentCount].age;
 
         cout << "\n";
 
         cout << "Enter GPA: ";
-        cin >> students[student_count].gpa;
+        cin >> students[studentCount].gpa;
 
         cout << "\n";
             
         cout << "Enter ID: ";
-        cin >> students[student_count].id;
+        cin >> students[studentCount].id;
 
-        student_count++;
+        studentCount++;
 
         cout << "\n";
 
@@ -54,15 +56,15 @@ void add_students()
     }
 }
 
-void display_students()
+void displayStudents()
 {
-    if(student_count==0)
+    if(studentCount==0)
     {
         cout << "No student founded!\n";
     }
 
 
-    for(int i = 0; i < student_count; i++)
+    for(int i = 0; i < studentCount; i++)
     {
         cout << "Name: " << students[i].name << "\n";
         cout << "Age: " << students[i].age << "\n";
@@ -74,7 +76,7 @@ void display_students()
 int main()
 {
 
-    bool shouldstop = false;
+    bool shouldExit = false;
     int choice;
     
     do
@@ -88,18 +90,18 @@ int main()
 
         if(choice == 1)
         {
-            add_students();
+            addStudents();
         }
 
         else if(choice == 2)
         {
-            display_students();
+            displayStudents();
         }
 
         else if(choice == 3)
         {
             cout << "Thankyou for the visit.";
-            shouldstop = true;
+            shouldExit = true;
         
         }
 
@@ -108,7 +110,7 @@ int main()
             cout << "Invalid! Choice.";
         }
         
-    } while (shouldstop == false);
+    } while (shouldExit == false);
     
     return 0;
     
