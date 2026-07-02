@@ -55,6 +55,21 @@ void addStudents()
     }
 }
 
+
+
+
+void displayStudent( int index)
+{
+    cout << "Name: " << students[index].name <<"\n";
+    cout << "Age: " << students[index].age << "\n";
+    cout << "GPA: " << students[index].gpa << "\n";
+    cout << "ID: " << students[index].id << "\n";
+    cout << "\n\n";
+    
+}
+
+
+
 void displayStudents()
 {
     if(studentCount==0)
@@ -66,10 +81,7 @@ void displayStudents()
 
     for(int i = 0; i < studentCount; i++)
     {
-        cout << "Name: " << students[i].name << "\n";
-        cout << "Age: " << students[i].age << "\n";
-        cout << "GPA: " << students[i].gpa << "\n";
-        cout << "ID: " << students[i].id << "\n";
+        displayStudent(i);
     }
 }
 
@@ -102,10 +114,8 @@ void searchStudent()
     if( index >= 0)
     {
         cout << "Here is the student's information with the ID Number: " << idNo << "\n";
-        cout << "Name: " << students[index].name << "\n";
-        cout << "Age: " << students[index].age << "\n";
-        cout << "GPA: " << students[index].gpa << "\n";
-        cout << "ID: " << students[index].id << "\n";
+
+        displayStudent(index);
 
     }
 
@@ -134,11 +144,7 @@ void searchByName()
     {
         if(students[i].name == name)
         {
-            cout << "Name: " << students[i].name <<"\n";
-            cout << "Age: " << students[i].age << "\n";
-            cout << "GPA: " << students[i].gpa << "\n";
-            cout << "ID: " << students[i].id << "\n";
-            cout << "\n\n";
+            displayStudent(i);
 
             found = true;
         }
