@@ -75,15 +75,18 @@ void displayStudents()
     }
 }
 
-void searchStudent()
+int searchStudent()
 {
     int idNo;
     bool found = false;
+    int i = 0;
+
+    int index = i;
 
     cout << "Enter Student ID: ";
     cin >> idNo;
 
-    for(int i = 0; i < studentCount; i++)
+    for(i; i < studentCount; i++)
     {
 
     if(students[i].id == idNo)
@@ -96,9 +99,11 @@ void searchStudent()
 
         found = true;
         break;
+    
+    }
+    
     }
 
-    }
 
     if (found == false)
     {
@@ -107,7 +112,24 @@ void searchStudent()
         << "was not found.\n " ;
     }
 
+    return index;
 
+
+}
+
+
+int findStudent(int idNo)
+{
+    for(int i=0; i<studentCount; i++)
+    {
+        if(students[i].id == idNo)
+        {
+            return i;
+        }
+        
+    }
+
+    return -1;
 }
 
 

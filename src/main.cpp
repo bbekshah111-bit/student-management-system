@@ -110,6 +110,20 @@ void searchStudent()
 
 }
 
+int findStudent(int idNo)
+{
+    for(int i=0; i<studentCount; i++)
+    {
+        if(students[i].id == idNo)
+        {
+            return i;
+        }
+        
+    }
+
+    return -1;
+}
+
 
 int main()
 {
