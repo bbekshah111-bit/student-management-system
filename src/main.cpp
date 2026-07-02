@@ -119,6 +119,38 @@ void searchStudent()
 
 }
 
+void searchByName()
+{
+    string name;
+    bool found = false;
+
+    cout << "Enter the name of Student: ";
+    cin >> name;
+
+    cout << "Students Found: \n";
+
+
+    for(int i=0; i<studentCount; i++)
+    {
+        if(students[i].name == name)
+        {
+            cout << "Name: " << students[i].name <<"\n";
+            cout << "Age: " << students[i].age << "\n";
+            cout << "GPA: " << students[i].gpa << "\n";
+            cout << "ID: " << students[i].id << "\n";
+            cout << "\n\n";
+
+            found = true;
+        }
+    }
+
+    if(found == false)
+    {
+        cout << "sorry! No student with this name found.";
+    }
+
+}
+
 
 
 int main()
