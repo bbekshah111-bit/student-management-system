@@ -56,6 +56,9 @@ void addStudents()
     }
 }
 
+
+
+
 void displayStudents()
 {
     if(studentCount==0)
@@ -63,7 +66,6 @@ void displayStudents()
         cout << "No student founded!\n";
         return;
     }
-
 
 
     for(int i = 0; i < studentCount; i++)
@@ -75,47 +77,7 @@ void displayStudents()
     }
 }
 
-int searchStudent()
-{
-    int idNo;
-    bool found = false;
-    int i = 0;
 
-    int index = i;
-
-    cout << "Enter Student ID: ";
-    cin >> idNo;
-
-    for(i; i < studentCount; i++)
-    {
-
-    if(students[i].id == idNo)
-    {
-        cout << "Here is the student's information with the ID Number: " << idNo << "\n";
-        cout << "Name: " << students[i].name << "\n";
-        cout << "Age: " << students[i].age << "\n";
-        cout << "GPA: " << students[i].gpa << "\n";
-        cout << "ID: " << students[i].id << "\n";
-
-        found = true;
-        break;
-    
-    }
-    
-    }
-
-
-    if (found == false)
-    {
-        cout << "Student with ID" 
-        << idNo 
-        << "was not found.\n " ;
-    }
-
-    return index;
-
-
-}
 
 
 int findStudent(int idNo)
@@ -131,6 +93,39 @@ int findStudent(int idNo)
 
     return -1;
 }
+
+
+
+int searchStudent()
+{
+    int idNo;
+    
+    cout << "Enter Student ID: ";
+    cin >> idNo;
+
+    int index = findStudent(idNo);
+
+
+    if(index >= 0)
+    {
+        cout << "Here is the student's information with the ID Number: " << idNo << "\n";
+        cout << "Name: " << students[i].name << "\n";
+        cout << "Age: " << students[i].age << "\n";
+        cout << "GPA: " << students[i].gpa << "\n";
+        cout << "ID: " << students[i].id << "\n";
+         
+    }
+    
+
+    else if ( index == -1)
+    {
+        cout << "Student with ID" 
+        << idNo 
+        << "was not found.\n " ;
+    }
+
+}
+
 
 
 int main()
