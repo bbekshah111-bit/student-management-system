@@ -232,6 +232,57 @@ void updateStudent()
 }
 
 
+void deleteStudent()
+{
+    int deleteID;
+
+    cout << "Enter the ID of student you want to delete: ";
+    cin >> deleteID;
+
+    int index = findStudent(deleteID);
+
+    if(index >= 0)
+    {
+        int opt;
+        cout << "You want to delete this student: \n";
+        displayStudent(index);
+        cout << "\n\n";
+        cout << "Please confirm: \n";
+        cout << "1. Yes \n";
+        cout << "2. No \n";
+        cout << "Enter your choice: ";
+        cin >> opt;
+
+        switch (opt)
+        {
+        case 1:
+            for(int i=index; i < studentCount - 1 ; i++)
+            {
+                students[i] = students[i + 1];
+            }
+            studentCount--;
+            break;
+
+        case 2:
+            return;
+        
+        default:
+            cout << "Invalid! option, please choose correct one.";
+            break;
+        }
+        
+
+
+
+    }
+
+    else
+    {
+        cout << "Student with is ID was not found.";
+    }
+}
+
+
 
 int main()
 {
@@ -250,7 +301,8 @@ int main()
         cout << "3. Search by ID Student\n";
         cout << "4. Search Student by Name\n";
         cout << "5. Update Student Information\n";
-        cout << "6. Exit\n";
+        cout << "6. Delete Student\n";
+        cout << "7. Exit\n";
         cout << "\n\n";
         cout << "Enter Choice: ";
 
@@ -280,6 +332,10 @@ int main()
             break;
 
         case 6:
+            deleteStudent();
+            break;
+
+        case 7:
             cout << "Thankyou for visiting.";
             shouldExit = true;
             break;
