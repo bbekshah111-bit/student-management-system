@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 
 using namespace std;
@@ -281,6 +282,23 @@ void deleteStudent()
     }
 }
 
+
+void loadStudentData()
+{
+    ifstream file("student.txt");
+
+    while(studentCount < MAX_STUDENT && file >> students[studentCount].name)
+    {
+        file >> students[studentCount].age ;
+        file >> students[studentCount].gpa ;
+        file >> students[studentCount].id ;
+
+
+        studentCount ++;
+    }
+
+    file.close();
+}
 
 
 int main()
