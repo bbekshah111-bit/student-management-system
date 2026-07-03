@@ -18,6 +18,27 @@ Student students[MAX_STUDENT];
 
 int studentCount = 0;
 
+
+
+void loadStudentData()
+{
+    ifstream file("student.txt");
+
+    while(studentCount < MAX_STUDENT && file >> students[studentCount].name)
+    {
+        file >> students[studentCount].age ;
+        file >> students[studentCount].gpa ;
+        file >> students[studentCount].id ;
+
+
+        studentCount ++;
+    }
+
+    file.close();
+}
+
+
+
 void addStudents()
 {
     if (studentCount>=MAX_STUDENT)
@@ -28,33 +49,31 @@ void addStudents()
     }
 
 
+    cout << "Enter Name: ";
+    cin >> students[studentCount].name;
 
-    else
-    {
-        cout << "Enter Name: ";
-        cin >> students[studentCount].name;
+    cout << "\n";
 
-        cout << "\n";
+    cout << "Enter Age: ";
+    cin >> students[studentCount].age;
 
-        cout << "Enter Age: ";
-        cin >> students[studentCount].age;
+    cout << "\n";
 
-        cout << "\n";
+    cout << "Enter GPA: ";
+    cin >> students[studentCount].gpa;
 
-        cout << "Enter GPA: ";
-        cin >> students[studentCount].gpa;
-
-        cout << "\n";
+    cout << "\n";
             
-        cout << "Enter ID: ";
-        cin >> students[studentCount].id;
+    cout << "Enter ID: ";
+    cin >> students[studentCount].id;
 
-        studentCount++;
+    studentCount++;
 
-        cout << "\n";
+    cout << "\n";
+    saveStudentData();
 
 
-    }
+
 }
 
 
@@ -192,6 +211,7 @@ void updateStudent()
             cout << "Enter new name: ";
             cin >> newName;
             students[index].name = newName;
+            saveStudentData();
             break;}
 
         case 2:
@@ -199,6 +219,7 @@ void updateStudent()
             cout << "Enter new age: ";
             cin >> newAge;
             students[index].age = newAge;
+            saveStudentData();
             break;}
 
         case 3:
@@ -206,6 +227,7 @@ void updateStudent()
             cout << "Enter new GPA: ";
             cin >> newGPA;
             students[index].gpa = newGPA;
+            saveStudentData();
             break;}
 
         case 4:
@@ -213,6 +235,7 @@ void updateStudent()
             cout << "Enter new ID: ";
             cin >> newID;
             students[index].id = newID;
+            saveStudentData();
             break;}
 
         
@@ -229,8 +252,11 @@ void updateStudent()
         cout<< "Student with this ID was not found.\n";
     }
 
+
     
 }
+
+
 
 void deleteStudent()
 {
@@ -261,10 +287,11 @@ void deleteStudent()
                 students[i] = students[i + 1];
             }
             studentCount--;
+            saveStudentData();
             break;
 
         case 2:
-            return;
+            break;
         
         default:
             cout << "Invalid! option, please choose correct one.";
@@ -272,29 +299,28 @@ void deleteStudent()
         }
         
 
-
-
     }
 
     else
     {
-        cout << "Student with is ID was not found.";
+        cout << "Student with this ID was not found.";
     }
 }
 
 
-void loadStudentData()
+
+
+void saveStudentData()
 {
-    ifstream file("student.txt");
+    ofstream file("student.txt");
 
-    while(studentCount < MAX_STUDENT && file >> students[studentCount].name)
+    for(int i=0; i<studentCount; i++)
     {
-        file >> students[studentCount].age ;
-        file >> students[studentCount].gpa ;
-        file >> students[studentCount].id ;
+        file << students[i].name << "\n";
+        file << students[i].age << "\n";
+        file << students[i].gpa << "\n";
+        file << students[i].id << "\n";
 
-
-        studentCount ++;
     }
 
     file.close();
