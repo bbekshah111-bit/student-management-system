@@ -326,25 +326,45 @@ void deleteStudent()
 
 int validateUserInput(const string& message)
 {
-    int variable;
+    string variable;
 
     while(true)
     {
 
         cout << message;
+        getline(cin, variable);
         
-        if(!(cin >> variable))
+        if(checkIsDigit(variable))
         {
-            cout << "Invalid input, please enter an integer.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return stoi(variable);
         }
 
         else
         {
-            return variable;
+            cout << "Invalid input please enter an integer.\n";
+
         }
     }
+}
+
+
+bool checkIsDigit(const string& input)
+{
+    if(input.empty())
+    {
+        return false;
+    }
+
+    for(char ch: input)
+    {
+        if(!isdigit(ch))
+        {
+            return false;     
+        }
+    }
+
+    return true;
+    
 }
 
 
