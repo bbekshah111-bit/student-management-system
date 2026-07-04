@@ -19,8 +19,7 @@ Student students[MAX_STUDENT];
 int studentCount = 0;
 
 
-
-void loadStudentData()
+    void loadStudentData()
 {
     ifstream file("student.txt");
 
@@ -32,6 +31,23 @@ void loadStudentData()
 
 
         studentCount ++;
+    }
+
+    file.close();
+}
+
+
+void saveStudentData()
+{
+    ofstream file("student.txt");
+
+    for(int i=0; i<studentCount; i++)
+    {
+        file << students[i].name << "\n";
+        file << students[i].age << "\n";
+        file << students[i].gpa << "\n";
+        file << students[i].id << "\n";
+
     }
 
     file.close();
@@ -308,27 +324,38 @@ void deleteStudent()
 }
 
 
-
-
-void saveStudentData()
+int validateUserInput(const string& message)
 {
-    ofstream file("student.txt");
+    int variable;
 
-    for(int i=0; i<studentCount; i++)
+    while(true)
     {
-        file << students[i].name << "\n";
-        file << students[i].age << "\n";
-        file << students[i].gpa << "\n";
-        file << students[i].id << "\n";
 
+        cout << message;
+        
+        if(!(cin >> variable))
+        {
+            cout << "Invalid input, please enter an integer.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        else
+        {
+            return variable;
+        }
     }
-
-    file.close();
 }
+
+
 
 
 int main()
 {
+
+    loadStudentData();
+
+
 
     bool shouldExit = false;
     int choice;

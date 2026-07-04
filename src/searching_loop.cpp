@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<string>
 
 using namespace std;
@@ -17,6 +18,43 @@ Student students[MAX_STUDENT];
 
 int studentCount = 0;
 
+
+    void loadStudentData()
+{
+    ifstream file("student.txt");
+
+    while(studentCount < MAX_STUDENT && file >> students[studentCount].name)
+    {
+        file >> students[studentCount].age ;
+        file >> students[studentCount].gpa ;
+        file >> students[studentCount].id ;
+
+
+        studentCount ++;
+    }
+
+    file.close();
+}
+
+
+void saveStudentData()
+{
+    ofstream file("student.txt");
+
+    for(int i=0; i<studentCount; i++)
+    {
+        file << students[i].name << "\n";
+        file << students[i].age << "\n";
+        file << students[i].gpa << "\n";
+        file << students[i].id << "\n";
+
+    }
+
+    file.close();
+}
+
+
+
 void addStudents()
 {
     if (studentCount>=MAX_STUDENT)
@@ -27,33 +65,31 @@ void addStudents()
     }
 
 
+    cout << "Enter Name: ";
+    cin >> students[studentCount].name;
 
-    else
-    {
-        cout << "Enter Name: ";
-        cin >> students[studentCount].name;
+    cout << "\n";
 
-        cout << "\n";
+    cout << "Enter Age: ";
+    cin >> students[studentCount].age;
 
-        cout << "Enter Age: ";
-        cin >> students[studentCount].age;
+    cout << "\n";
 
-        cout << "\n";
+    cout << "Enter GPA: ";
+    cin >> students[studentCount].gpa;
 
-        cout << "Enter GPA: ";
-        cin >> students[studentCount].gpa;
-
-        cout << "\n";
+    cout << "\n";
             
-        cout << "Enter ID: ";
-        cin >> students[studentCount].id;
+    cout << "Enter ID: ";
+    cin >> students[studentCount].id;
 
-        studentCount++;
+    studentCount++;
 
-        cout << "\n";
+    cout << "\n";
+    saveStudentData();
 
 
-    }
+
 }
 
 
@@ -191,6 +227,7 @@ void updateStudent()
             cout << "Enter new name: ";
             cin >> newName;
             students[index].name = newName;
+            saveStudentData();
             break;}
 
         case 2:
@@ -198,6 +235,7 @@ void updateStudent()
             cout << "Enter new age: ";
             cin >> newAge;
             students[index].age = newAge;
+            saveStudentData();
             break;}
 
         case 3:
@@ -205,6 +243,7 @@ void updateStudent()
             cout << "Enter new GPA: ";
             cin >> newGPA;
             students[index].gpa = newGPA;
+            saveStudentData();
             break;}
 
         case 4:
@@ -212,6 +251,7 @@ void updateStudent()
             cout << "Enter new ID: ";
             cin >> newID;
             students[index].id = newID;
+            saveStudentData();
             break;}
 
         
@@ -228,8 +268,10 @@ void updateStudent()
         cout<< "Student with this ID was not found.\n";
     }
 
+
     
 }
+
 
 
 void deleteStudent()
@@ -261,10 +303,11 @@ void deleteStudent()
                 students[i] = students[i + 1];
             }
             studentCount--;
+            saveStudentData();
             break;
 
         case 2:
-            return;
+            break;
         
         default:
             cout << "Invalid! option, please choose correct one.";
@@ -272,20 +315,45 @@ void deleteStudent()
         }
         
 
-
-
     }
 
     else
     {
-        cout << "Student with is ID was not found.";
+        cout << "Student with this ID was not found.";
     }
 }
 
 
+int validateUserInput(const string& message)
+{
+    int variable;
+
+    while(true)
+    {
+
+        cout << message;
+        
+        if(!(cin >> variable))
+        {
+            cout << "Invalid input, please enter an integer.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        else
+        {
+            return variable;
+        }
+    }
+}
+
 
 int main()
 {
+
+    loadStudentData();
+
+
 
     bool shouldExit = false;
     int choice;
@@ -301,13 +369,13 @@ int main()
         cout << "3. Search by ID Student\n";
         cout << "4. Search Student by Name\n";
         cout << "5. Update Student Information\n";
-        cout << "6. Delete Student\n";
+        cout << "6. Delete Students\n";
         cout << "7. Exit\n";
         cout << "\n\n";
-        cout << "Enter Choice: ";
 
 
-        cin >> choice;
+        choice = validateUserInput("Enter Choice: ");
+
 
         switch (choice)
         {
