@@ -377,6 +377,72 @@ bool checkIsDigit(const string& input)
     
 }
 
+float validateFloatInput(const string& message, float min_value, float max_value)
+{
+
+    string variable;
+
+    while(true)
+{
+    cout << message;
+    getline(cin, variable);
+
+    if(checkIsFloat(variable))
+    {
+        float to_float = stof(variable);
+        
+        if(to_float >= min_value && to_float <= max_value)
+        {
+            return to_float;
+        }
+
+        else
+        {
+            cout<< "Invalid range, please enter between "<< min_value << "-" << max_value;
+        }
+    }
+
+    else
+    {
+        cout << "Invalid input, please enter again.\n";
+    }
+
+}
+
+}
+
+bool checkIsFloat(const string& input)
+{
+    if(input.empty())
+    {
+        return false;
+    }
+
+    bool hasDigit = false;
+    int dotCount = 0;
+
+    for(char ch: input)
+    {
+        if(isdigit(ch))
+        {
+            hasDigit = true;
+        }
+
+        else if(ch == '.')
+        {
+            dotCount++ ;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    return dotCount <=1 && hasDigit;
+
+}
+
 
 
 

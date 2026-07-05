@@ -19,7 +19,7 @@ Student students[MAX_STUDENT];
 int studentCount = 0;
 
 
-    void loadStudentData()
+void loadStudentData()
 {
     ifstream file("student.txt");
 
@@ -66,12 +66,13 @@ void addStudents()
 
 
     cout << "Enter Name: ";
-    cin >> students[studentCount].name;
+    getline(cin, students[studentCount].name );
 
     cout << "\n";
 
-    cout << "Enter Age: ";
-    cin >> students[studentCount].age;
+    //cout << "Enter Age: ";
+    validateUserInput("Enter Age: ", 1, 150);
+    //cin >> students[studentCount].age;
 
     cout << "\n";
 
@@ -381,6 +382,73 @@ bool checkIsDigit(const string& input)
 }
 
 
+float validateFloatInput(const string& message, float min_value, float max_value)
+{
+
+    string variable;
+
+    while(true)
+{
+    cout << message;
+    getline(cin, variable);
+
+    if(checkIsFloat(variable))
+    {
+        float to_float = stof(variable);
+        
+        if(to_float >= min_value && to_float <= max_value)
+        {
+            return to_float;
+        }
+
+        else
+        {
+            cout<< "Invalid range, please enter between "<< min_value << "-" << max_value;
+        }
+    }
+
+    else
+    {
+        cout << "Invalid input, please enter again.\n";
+    }
+
+}
+
+}
+
+bool checkIsFloat(const string& input)
+{
+    if(input.empty())
+    {
+        return false;
+    }
+
+    bool hasDigit = false;
+    int dotCount = 0;
+
+    for(char ch: input)
+    {
+        if(isdigit(ch))
+        {
+            hasDigit = true;
+        }
+
+        else if(ch == '.')
+        {
+            dotCount++ ;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    return dotCount <=1 && hasDigit;
+
+}
+
+
 int main()
 {
 
@@ -407,7 +475,7 @@ int main()
         cout << "\n\n";
 
 
-        choice = validateUserInput("Enter Choice: ");
+        choice = validateUserInput("Enter Choice: ", 1, 7);
 
 
         switch (choice)
