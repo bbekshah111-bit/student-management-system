@@ -324,7 +324,10 @@ void deleteStudent()
 }
 
 
-int validateUserInput(const string& message)
+
+
+
+int validateUserInput(const string& message, int least_value, int max_value )
 {
     string variable;
 
@@ -336,7 +339,16 @@ int validateUserInput(const string& message)
         
         if(checkIsDigit(variable))
         {
-            return stoi(variable);
+            int to_int = stoi(variable);
+            if( to_int >= least_value && to_int <= max_value)
+            {
+                return to_int;
+            }
+
+            else
+            {
+                cout<< "Invalid range, please enter between" << least_value << "-" << max_value;
+            }
         }
 
         else
@@ -346,6 +358,7 @@ int validateUserInput(const string& message)
         }
     }
 }
+
 
 
 bool checkIsDigit(const string& input)

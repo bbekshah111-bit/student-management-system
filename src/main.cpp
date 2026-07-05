@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<limit>
 
 using namespace std;
 
@@ -324,7 +325,7 @@ void deleteStudent()
 }
 
 
-int validateUserInput(const string& message)
+int validateUserInput(const string& message, int leastValue, int maxValue )
 {
     string variable;
 
@@ -336,7 +337,16 @@ int validateUserInput(const string& message)
         
         if(checkIsDigit(variable))
         {
-            return stoi(variable);
+            int to_int = stoi(variable);
+            if( to_int >= leastValue && to_int <= maxValue)
+            {
+                return to_int;
+            }
+
+            else
+            {
+                cout<< "Invalid range, please enter between " << least_value << "-" << max_value << "\n";
+            }
         }
 
         else
