@@ -53,6 +53,66 @@ void saveStudentData()
     file.close();
 }
 
+
+
+bool checkIsName(const string& input)
+{
+
+    if(input.empty())
+    {
+        return false;
+    }
+
+    bool hasLetter = false;
+
+    for(char ch: input)
+    {
+        if(isalpha(ch))
+        {
+            hasLetter = true;
+        }
+
+        else if(ch == ' ')
+        {
+            continue;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    return hasLetter;
+
+}
+
+
+string validateNameInput(const string& message)
+{
+    string name;
+
+
+    while(true)
+    {
+        cout << message;
+        getline(cin, name);
+
+        if(checkIsName(name))
+        {
+            return name;
+        }
+
+        else
+        {
+            cout << "Invalid!, please enter a valid name: \n";
+        }
+
+    }
+}
+
+
+
 bool checkIsDigit(const string& input)
 {
     if(input.empty())
@@ -175,7 +235,19 @@ float validateFloatInput(const string& message, float minValue, float maxValue)
 }
 
 
+int findStudent(int idNo)
+{
+    for(int i=0; i<studentCount; i++)
+    {
+        if(students[i].id == idNo)
+        {
+            return i;
+        }
+        
+    }
 
+    return -1;
+}
 
 
 void addStudents()
@@ -188,8 +260,9 @@ void addStudents()
     }
 
 
-    cout << "Enter Name: ";
-    getline(cin, students[studentCount].name );
+    //cout << "Enter Name: ";
+    students[studentCount].name = validateNameInput("Enter Name: ");
+    //getline(cin, students[studentCount].name );
 
     cout << "\n";
 
@@ -266,20 +339,6 @@ void displayStudents()
 }
 
 
-int findStudent(int idNo)
-{
-    for(int i=0; i<studentCount; i++)
-    {
-        if(students[i].id == idNo)
-        {
-            return i;
-        }
-        
-    }
-
-    return -1;
-}
-
 
 void searchStudent()
 {
@@ -315,9 +374,9 @@ void searchByName()
     string name;
     bool found = false;
 
-    cout << "Enter the name of Student: ";
-    //cin >> name;
-    getline(cin, name);
+    //cout << "Enter the name of Student: ";
+    name = validateNameInput("Enter the name of Student: ");
+    //getline(cin, name);
 
     cout << "Students Found: \n";
 
@@ -365,9 +424,9 @@ void updateStudent()
         {
         case 1:
             {string newName;
-            cout << "Enter new name: ";
-            //cin >> newName;
-            getline(cin, newName);
+            //cout << "Enter new name: ";
+            newName = validateNameInput("Enter New Name: ");
+            //getline(cin, newName);
             students[index].name = newName;
             saveStudentData();
             break;}
@@ -546,58 +605,3 @@ int main()
 }
 
 
-string validateNameInput(const string& message)
-{
-    string name;
-
-
-    while(true)
-    {
-        cout << message;
-        getline(cin, name);
-
-        if(checkIsName(name))
-        {
-            return name;
-        }
-
-        else
-        {
-            cout << "Invalid!, please enter a valid name: \n";
-        }
-
-    }
-}
-
-
-bool checkIsName(const string& input)
-{
-
-    if(input.empty())
-    {
-        return false;
-    }
-
-    bool hasLetter = false;
-
-    for(char ch: input)
-    {
-        if(isalpha(ch))
-        {
-            hasLetter = true;
-        }
-
-        else if(ch == ' ')
-        {
-            continue;
-        }
-
-        else
-        {
-            return false;
-        }
-    }
-
-    return hasLetter;
-
-}
