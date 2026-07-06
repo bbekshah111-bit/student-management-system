@@ -548,11 +548,25 @@ int main()
 
 string validateNameInput(const string& message)
 {
-    string variable;
-    cout << message;
-    getline(cin, variable);
+    string name;
 
-    while
+
+    while(true)
+    {
+        cout << message;
+        getline(cin, name);
+
+        if(checkIsName(name))
+        {
+            return name;
+        }
+
+        else
+        {
+            cout << "Invalid!, please enter a valid name: \n";
+        }
+
+    }
 }
 
 
