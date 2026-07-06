@@ -544,3 +544,46 @@ int main()
     return 0;
     
 }
+
+
+string validateNameInput(const string& message)
+{
+    string variable;
+    cout << message;
+    getline(cin, variable);
+
+    while
+}
+
+
+bool checkIsName(const string& input)
+{
+
+    if(input.empty())
+    {
+        return false;
+    }
+
+    bool hasLetter = false;
+
+    for(char ch: input)
+    {
+        if(isalpha(ch))
+        {
+            hasLetter = true;
+        }
+
+        else if(ch == ' ')
+        {
+            continue;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    return hasLetter;
+
+}
