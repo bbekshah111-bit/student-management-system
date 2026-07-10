@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<cctype>
 
 using namespace std;
 
@@ -23,11 +24,13 @@ void loadStudentData()
 {
     ifstream file("student.txt");
 
-    while(studentCount < MAX_STUDENT && file >> students[studentCount].name)
+    while(studentCount < MAX_STUDENT && getline(file, students[studentCount].name))
     {
         file >> students[studentCount].age ;
         file >> students[studentCount].gpa ;
         file >> students[studentCount].id ;
+
+        file.ignore();
 
 
         studentCount ++;
@@ -52,6 +55,66 @@ void saveStudentData()
 
     file.close();
 }
+
+
+
+bool checkIsName(const string& input)
+{
+
+    if(input.empty())
+    {
+        return false;
+    }
+
+    bool hasLetter = false;
+
+    for(char ch: input)
+    {
+        if(isalpha(ch))
+        {
+            hasLetter = true;
+        }
+
+        else if(ch == ' ')
+        {
+            continue;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    return hasLetter;
+
+}
+
+
+string validateNameInput(const string& message)
+{
+    string name;
+
+
+    while(true)
+    {
+        cout << message;
+        getline(cin, name);
+
+        if(checkIsName(name))
+        {
+            return name;
+        }
+
+        else
+        {
+            cout << "Invalid!, please enter a valid name: \n";
+        }
+
+    }
+}
+
+
 
 bool checkIsDigit(const string& input)
 {
@@ -175,7 +238,19 @@ float validateFloatInput(const string& message, float minValue, float maxValue)
 }
 
 
+int findStudent(int idNo)
+{
+    for(int i=0; i<studentCount; i++)
+    {
+        if(students[i].id == idNo)
+        {
+            return i;
+        }
+        
+    }
 
+    return -1;
+}
 
 
 void addStudents()
@@ -188,8 +263,9 @@ void addStudents()
     }
 
 
-    cout << "Enter Name: ";
-    getline(cin, students[studentCount].name );
+    //cout << "Enter Name: ";
+    students[studentCount].name = validateNameInput("Enter Name: ");
+    //getline(cin, students[studentCount].name );
 
     cout << "\n";
 
@@ -206,7 +282,25 @@ void addStudents()
     cout << "\n";
             
     //cout << "Enter ID: ";
-    students[studentCount].id = validateUserInput("Enter ID: ", 1, 10000);
+    int ids;
+   
+    while(true)
+    {
+        ids = validateUserInput("Enter ID: ", 1, 10000);
+
+        if(findStudent(ids) != -1)
+        {
+            cout << "Invalid! this ID already exists. Please enter other ID: \n\n";
+        }
+
+        else
+        {
+           students[studentCount].id = ids;
+           break; 
+        }
+    }
+
+    //students[studentCount].id = validateUserInput("Enter ID: ", 1, 10000);
     //cin >> students[studentCount].id;
 
     studentCount++;
@@ -248,20 +342,6 @@ void displayStudents()
 }
 
 
-int findStudent(int idNo)
-{
-    for(int i=0; i<studentCount; i++)
-    {
-        if(students[i].id == idNo)
-        {
-            return i;
-        }
-        
-    }
-
-    return -1;
-}
-
 
 void searchStudent()
 {
@@ -297,9 +377,9 @@ void searchByName()
     string name;
     bool found = false;
 
-    cout << "Enter the name of Student: ";
-    //cin >> name;
-    getline(cin, name);
+    //cout << "Enter the name of Student: ";
+    name = validateNameInput("Enter the name of Student: ");
+    //getline(cin, name);
 
     cout << "Students Found: \n";
 
@@ -347,9 +427,9 @@ void updateStudent()
         {
         case 1:
             {string newName;
-            cout << "Enter new name: ";
-            //cin >> newName;
-            getline(cin, newName);
+            //cout << "Enter new name: ";
+            newName = validateNameInput("Enter New Name: ");
+            //getline(cin, newName);
             students[index].name = newName;
             saveStudentData();
             break;}
@@ -375,9 +455,31 @@ void updateStudent()
         case 4:
             {int newID;
             //cout << "Enter new ID: ";
-            newID = validateUserInput("Enter new ID: ", 1, 10000);
+
+            while(true)
+            {
+                newID = validateUserInput("Enter new ID: ", 1, 10000);
+
+                if(findStudent(newID) == -1)
+                {
+    
+                    students[index].id = newID;
+                    break;
+                }
+
+                else if(students[index].id == newID)
+                {
+                    students[index].id = newID;
+                    break;
+                }
+
+                else
+                {
+                    cout << "Sorry! this ID already exists please enter a new ID: \n";
+                }
+            }
             //cin >> newID;
-            students[index].id = newID;
+            //students[index].id = newID;
             saveStudentData();
             break;}
 
@@ -526,4 +628,5 @@ int main()
     return 0;
     
 }
+
 

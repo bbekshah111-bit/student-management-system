@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<cctype>
 
 using namespace std;
 
@@ -23,11 +24,13 @@ void loadStudentData()
 {
     ifstream file("student.txt");
 
-    while(studentCount < MAX_STUDENT && file >> students[studentCount].name)
+    while(studentCount < MAX_STUDENT && getline(file, students[studentCount].name))
     {
         file >> students[studentCount].age ;
         file >> students[studentCount].gpa ;
         file >> students[studentCount].id ;
+
+        file.ignore();
 
 
         studentCount ++;
@@ -452,9 +455,31 @@ void updateStudent()
         case 4:
             {int newID;
             //cout << "Enter new ID: ";
-            newID = validateUserInput("Enter new ID: ", 1, 10000);
+
+            while(true)
+            {
+                newID = validateUserInput("Enter new ID: ", 1, 10000);
+
+                if(findStudent(newID) == -1)
+                {
+    
+                    students[index].id = newID;
+                    break;
+                }
+
+                else if(students[index].id == newID)
+                {
+                    students[index].id = newID;
+                    break;
+                }
+
+                else
+                {
+                    cout << "Sorry! this ID already exists please enter a new ID: \n";
+                }
+            }
             //cin >> newID;
-            students[index].id = newID;
+            //students[index].id = newID;
             saveStudentData();
             break;}
 
