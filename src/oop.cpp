@@ -18,10 +18,10 @@ class Student
     public:
         Student(string StudentName, int StudentAge, float StudentGpa, int StudentId)
         {
-            name = StudentName;
-            age = StudentAge;
-            gpa = StudentGpa;
-            id = StudentId;
+            this->name = StudentName;
+            this->age = StudentAge;
+            this->gpa = StudentGpa;
+            this->id = StudentId;
         }
 
         Student()
@@ -49,6 +49,26 @@ class Student
             return id;
         }
 
+        string setName(string newName)
+        {
+            name = newName;
+        }
+
+        int setAge(int newAge)
+        {
+            age = newAge;
+        }
+
+        float setGpa(float newGpa)
+        {
+            gpa = newGpa;
+        }
+
+        int setId(int newId)
+        {
+            id = newId;
+        }
+
         void display()
         {
             cout << "1.Name: " << name <<"\n";
@@ -57,7 +77,8 @@ class Student
             cout << "4.ID: " << id << "\n";
             cout << "\n\n";
     
-        }      
+        }
+        
 
 };
 
@@ -76,6 +97,7 @@ class StudentManager
         int findStudent(int idNo);
         void displayStudents();
         void searchStudent();
+        void addStudents();
         
 
 
@@ -368,6 +390,63 @@ void StudentManager::searchStudent()
 }
 
 
+void StudentManager::addStudents()
+{
+
+
+    //cout << "Enter Name: ";
+    string name = validateNameInput("Enter Name: ");
+    //getline(cin, students[studentCount].name );
+
+    cout << "\n";
+
+    //cout << "Enter Age: ";
+    int age = validateUserInput("Enter Age: ", 1, 150);
+    //cin >> students[studentCount].age;
+
+    cout << "\n";
+
+    //cout << "Enter GPA: ";
+    float gpa = validateFloatInput("Enter GPA: ", 0.0, 4.0);
+    //cin >> students[studentCount].gpa;
+
+    cout << "\n";
+            
+    //cout << "Enter ID: ";
+    int ids;
+   
+    while(true)
+    {
+        ids = validateUserInput("Enter ID: ", 1, 10000);
+
+        if(findStudent(ids) != -1)
+        {
+            cout << "Invalid! this ID already exists. Please enter other ID: \n\n";
+        }
+
+        else
+        {
+           break; 
+        }
+    }
+
+
+    Student student( name, age, gpa, ids);
+    students.push_back(student);
+
+    //students[studentCount].id = validateUserInput("Enter ID: ", 1, 10000);
+    //cin >> students[studentCount].id;
+
+
+    cout << "\n";
+    saveStudentData();
+
+    cout << "Student added successfully!\n";
+
+
+}
+
+
 int main()
 {
 
@@ -380,8 +459,3 @@ int main()
     manager.searchStudent();
     return 0;
 }
-
-
-
-
-
