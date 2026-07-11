@@ -49,22 +49,22 @@ class Student
             return id;
         }
 
-        string setName(string newName)
+        void setName(string newName)
         {
             name = newName;
         }
 
-        int setAge(int newAge)
+        void setAge(int newAge)
         {
             age = newAge;
         }
 
-        float setGpa(float newGpa)
+        void setGpa(float newGpa)
         {
             gpa = newGpa;
         }
 
-        int setId(int newId)
+        void setId(int newId)
         {
             id = newId;
         }
@@ -98,6 +98,9 @@ class StudentManager
         void displayStudents();
         void searchStudent();
         void addStudents();
+        void updateStudent();
+        void searchByName();
+        void deleteStudent();
         
 
 
@@ -447,6 +450,184 @@ void StudentManager::addStudents()
 }
 
 
+void StudentManager::updateStudent()
+{
+    int id;
+    int position;
+
+    //cout << "Enter the ID of student you whose information you want to edit: ";
+    id = validateUserInput("Enter the ID of student whose information you want to edit: ", 1, 10000);
+    //cin >> id;
+
+    int index = findStudent(id);
+     if (index >= 0)
+     
+     {
+     
+        students[index].display();
+
+        cout << "*note : please choose the field you want to update.\n";
+        //cout << "Select what you want to edit: ";
+        position = validateUserInput("Select what you want to edit: ", 1, 4);
+        //cin >> position;
+
+
+        switch(position)
+        {
+        case 1:
+            {string newName;
+            //cout << "Enter new name: ";
+            newName = validateNameInput("Enter New Name: ");
+            //getline(cin, newName);
+            students[index].setName(newName);
+            saveStudentData();
+            break;}
+
+        case 2:
+            {int newAge;
+            //cout << "Enter new age: ";
+            newAge = validateUserInput("Enter new age: ", 1, 150);
+            //cin >> newAge;
+            students[index].setAge(newAge);
+            saveStudentData();
+            break;}
+
+        case 3:
+            {float newGPA;
+            //cout << "Enter new GPA: ";
+            newGPA = validateFloatInput("Enter new GPA: ", 0.0, 4.0);
+            //cin >> newGPA;
+            students[index].setGpa(newGPA);
+            saveStudentData();
+            break;}
+
+        case 4:
+            {int newID;
+            //cout << "Enter new ID: ";
+
+            while(true)
+            {
+                newID = validateUserInput("Enter new ID: ", 1, 10000);
+
+                if(findStudent(newID) == -1)
+                {
+    
+                    students[index].setId(newID);
+                    break;
+                }
+
+                else if(students[index].getId() == newID)
+                {
+                    students[index].setId(newID);
+                    break;
+                }
+
+                else
+                {
+                    cout << "Sorry! this ID already exists please enter a new ID: \n";
+                }
+            }
+            //cin >> newID;
+            //students[index].id = newID;
+            saveStudentData();
+            break;}
+
+        
+        default:
+            cout << "Not a valid option. Please write the index of the given list. Example: 1 for name, 2 for age, ....";
+            break;
+        }
+
+
+    }
+
+    else 
+    {
+        cout<< "Student with this ID was not found.\n";
+    }
+  
+}
+
+
+void StudentManager::searchByName()
+{
+    string name;
+    bool found = false;
+
+    //cout << "Enter the name of Student: ";
+    name = validateNameInput("Enter the name of Student: ");
+    //getline(cin, name);
+
+    cout << "Students Found: \n";
+
+
+    for(int i=0; i<students.size(); i++)
+    {
+        if(students[i].getName() == name)
+        {
+            students[i].display();
+            found = true;
+        }
+    }
+
+    if(found == false)
+    {
+        cout << "sorry! No student with this name found.";
+    }
+
+}
+
+
+void StudentManager::deleteStudent()
+{
+    int deleteID;
+
+    //cout << "Enter the ID of student you want to delete: ";
+    deleteID = validateUserInput("Enter the ID of student you want to delete: ", 1, 10000);
+    //cin >> deleteID;
+
+    int index = findStudent(deleteID);
+
+    if(index >= 0)
+    {
+        int opt;
+        cout << "You want to delete this student: \n";
+        students[index].display();
+        cout << "\n\n";
+        cout << "Please confirm: \n";
+        cout << "1. Yes \n";
+        cout << "2. No \n";
+        //cout << "Enter your choice: ";
+        opt = validateUserInput("Enter your choice: ", 1, 2);
+        //cin >> opt;
+
+        switch (opt)
+        {
+        case 1:
+            students.erase(students.begin() + index);
+
+            saveStudentData();
+            cout << "Student deleted successfully.\n";
+            break;
+
+        case 2:
+            break;
+        
+        default:
+            cout << "Invalid! option, please choose correct one.";
+            break;
+        }
+        
+
+    }
+
+    else
+    {
+        cout << "Student with this ID was not found.";
+    }
+}
+
+
 int main()
 {
 
@@ -457,5 +638,8 @@ int main()
     //manager.findStudent();
     manager.displayStudents();
     manager.searchStudent();
+    manager.addStudents();
+    manager.updateStudent();
+    manager.deleteStudent();
     return 0;
 }
