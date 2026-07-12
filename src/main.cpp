@@ -1,61 +1,113 @@
 #include<iostream>
 #include<fstream>
+#include<vector>
 #include<string>
 #include<cctype>
 
 using namespace std;
 
-struct Student
+class Student
 {
-    string name;
-    int age;
-    float gpa;
-    int id;
+    private:
+        string name;
+        int age;
+        float gpa;
+        int id;
+
+
+    public:
+        Student(string StudentName, int StudentAge, float StudentGpa, int StudentId)
+        {
+            this->name = StudentName;
+            this->age = StudentAge;
+            this->gpa = StudentGpa;
+            this->id = StudentId;
+        }
+
+        Student()
+        {
+
+        }
+
+        string getName()
+        {
+            return name;
+        }
+
+        int getAge()
+        {
+            return age;
+        }
+
+        float getGpa()
+        {
+            return gpa;
+        }
+
+        int getId()
+        {
+            return id;
+        }
+
+        void setName(string newName)
+        {
+            name = newName;
+        }
+
+        void setAge(int newAge)
+        {
+            age = newAge;
+        }
+
+        void setGpa(float newGpa)
+        {
+            gpa = newGpa;
+        }
+
+        void setId(int newId)
+        {
+            id = newId;
+        }
+
+        void display()
+        {
+            cout << "1.Name: " << name <<"\n";
+            cout << "2.Age: " << age << "\n";
+            cout << "3.GPA: " << gpa << "\n";
+            cout << "4.ID: " << id << "\n";
+            cout << "\n\n";
+    
+        }
+        
+
 };
 
-const int MAX_STUDENT = 5;
 
-Student students[MAX_STUDENT];
-
-int studentCount = 0;
-
-
-void loadStudentData()
+class StudentManager
 {
-    ifstream file("student.txt");
+    private:
 
-    while(studentCount < MAX_STUDENT && getline(file, students[studentCount].name))
-    {
-        file >> students[studentCount].age ;
-        file >> students[studentCount].gpa ;
-        file >> students[studentCount].id ;
-
-        file.ignore();
+        vector<Student> students;
 
 
-        studentCount ++;
-    }
+    public:
 
-    file.close();
-}
+        void loadStudentData();
+        void saveStudentData();
+        int findStudent(int idNo);
+        void displayStudents();
+        void searchStudent();
+        void addStudents();
+        void updateStudent();
+        void searchByName();
+        void deleteStudent();
+        void executeChoice(int choice);
+        void displayMenu();
+        int getUserChoice();
+        void run();
+        
 
-
-void saveStudentData()
-{
-    ofstream file("student.txt");
-
-    for(int i=0; i<studentCount; i++)
-    {
-        file << students[i].name << "\n";
-        file << students[i].age << "\n";
-        file << students[i].gpa << "\n";
-        file << students[i].id << "\n";
-
-    }
-
-    file.close();
-}
-
+};
 
 
 bool checkIsName(const string& input)
@@ -91,6 +143,59 @@ bool checkIsName(const string& input)
 }
 
 
+bool checkIsFloat(const string& input)
+{
+    if(input.empty())
+    {
+        return false;
+    }
+
+    bool hasDigit = false;
+    int dotCount = 0;
+
+    for(char ch: input)
+    {
+        if(isdigit(ch))
+        {
+            hasDigit = true;
+        }
+
+        else if(ch == '.')
+        {
+            dotCount++ ;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    return dotCount <=1 && hasDigit;
+
+}
+
+
+bool checkIsDigit(const string& input)
+{
+    if(input.empty())
+    {
+        return false;
+    }
+
+    for(char ch: input)
+    {
+        if(!isdigit(ch))
+        {
+            return false;     
+        }
+    }
+
+    return true;
+    
+}
+
+
 string validateNameInput(const string& message)
 {
     string name;
@@ -112,27 +217,6 @@ string validateNameInput(const string& message)
         }
 
     }
-}
-
-
-
-bool checkIsDigit(const string& input)
-{
-    if(input.empty())
-    {
-        return false;
-    }
-
-    for(char ch: input)
-    {
-        if(!isdigit(ch))
-        {
-            return false;     
-        }
-    }
-
-    return true;
-    
 }
 
 
@@ -166,40 +250,6 @@ int validateUserInput(const string& message, int minValue, int maxValue )
 
         }
     }
-}
-
-
-
-bool checkIsFloat(const string& input)
-{
-    if(input.empty())
-    {
-        return false;
-    }
-
-    bool hasDigit = false;
-    int dotCount = 0;
-
-    for(char ch: input)
-    {
-        if(isdigit(ch))
-        {
-            hasDigit = true;
-        }
-
-        else if(ch == '.')
-        {
-            dotCount++ ;
-        }
-
-        else
-        {
-            return false;
-        }
-    }
-
-    return dotCount <=1 && hasDigit;
-
 }
 
 
@@ -238,11 +288,59 @@ float validateFloatInput(const string& message, float minValue, float maxValue)
 }
 
 
-int findStudent(int idNo)
+void StudentManager::loadStudentData()
 {
-    for(int i=0; i<studentCount; i++)
+    string name;
+    int age;
+    float gpa;
+    int id;
+
+    ifstream file("student.txt");
+
+    if (!file)
     {
-        if(students[i].id == idNo)
+        return;
+    }
+
+    while(getline(file, name))
+    {
+        file >> age ;
+        file >> gpa ;
+        file >> id ;
+
+        file.ignore();
+
+        Student student(name, age, gpa, id);
+        students.push_back(student);
+
+    }
+
+    file.close();
+    
+}
+
+
+void StudentManager::saveStudentData()
+{
+    ofstream file("student.txt");
+
+    for(int i=0; i<students.size(); i++)
+    {
+        file << students[i].getName() << "\n";
+        file << students[i].getAge() << "\n";
+        file << students[i].getGpa() << "\n";
+        file << students[i].getId() << "\n";
+
+    }
+
+    file.close();
+}
+
+int StudentManager::findStudent(int idNo)
+{
+    for(int i=0; i<students.size(); i++)
+    {
+        if(students[i].getId() == idNo)
         {
             return i;
         }
@@ -253,30 +351,69 @@ int findStudent(int idNo)
 }
 
 
-void addStudents()
+void StudentManager::displayStudents()
 {
-    if (studentCount>=MAX_STUDENT)
+    if(students.size()==0)
     {
-        cout << "Sorry! the list is full, can't store more.";
-
+        cout << "No students found!\n";
         return;
     }
 
 
+    for(int i = 0; i < students.size(); i++)
+    {
+
+        students[i].display();
+       
+    }
+}
+
+void StudentManager::searchStudent()
+{
+    int idNo;
+    
+    idNo = validateUserInput("Enter Student Id", 1, 10000);
+
+    int index = findStudent(idNo);
+
+
+    if(index >= 0)
+    {
+
+        //displayStudent(index);
+        students[index].display();
+
+    }
+    
+
+    else
+    {
+        cout << "Student with ID " 
+        << idNo 
+        << " was not found.\n " ;
+    }
+
+}
+
+
+void StudentManager::addStudents()
+{
+
+
     //cout << "Enter Name: ";
-    students[studentCount].name = validateNameInput("Enter Name: ");
+    string name = validateNameInput("Enter Name: ");
     //getline(cin, students[studentCount].name );
 
     cout << "\n";
 
     //cout << "Enter Age: ";
-    students[studentCount].age = validateUserInput("Enter Age: ", 1, 150);
+    int age = validateUserInput("Enter Age: ", 1, 150);
     //cin >> students[studentCount].age;
 
     cout << "\n";
 
     //cout << "Enter GPA: ";
-    students[studentCount].gpa = validateFloatInput("Enter GPA: ", 0.0, 4.0);
+    float gpa = validateFloatInput("Enter GPA: ", 0.0, 4.0);
     //cin >> students[studentCount].gpa;
 
     cout << "\n";
@@ -295,119 +432,34 @@ void addStudents()
 
         else
         {
-           students[studentCount].id = ids;
            break; 
         }
     }
 
+
+    Student student( name, age, gpa, ids);
+    students.push_back(student);
+
     //students[studentCount].id = validateUserInput("Enter ID: ", 1, 10000);
     //cin >> students[studentCount].id;
 
-    studentCount++;
 
     cout << "\n";
     saveStudentData();
 
+    cout << "Student added successfully!\n";
 
 
 }
 
 
-void displayStudent( int index)
-{
-    cout << "1.Name: " << students[index].name <<"\n";
-    cout << "2.Age: " << students[index].age << "\n";
-    cout << "3.GPA: " << students[index].gpa << "\n";
-    cout << "4.ID: " << students[index].id << "\n";
-    cout << "\n\n";
-    
-}
-
-
-void displayStudents()
-{
-    if(studentCount==0)
-    {
-        cout << "No student founded!\n";
-        return;
-    }
-
-
-    for(int i = 0; i < studentCount; i++)
-    {
-
-        displayStudent(i);
-       
-    }
-}
-
-
-
-void searchStudent()
-{
-    int idNo;
-    
-    //cout << "Enter Student ID: ";
-    idNo = validateUserInput("Enter Student Id", 1, 10000);
-    //cin >> idNo;
-
-    int index = findStudent(idNo);
-
-
-    if(index >= 0)
-    {
-
-        displayStudent(index);
-
-    }
-    
-
-    else
-    {
-        cout << "Student with ID" 
-        << idNo 
-        << "was not found.\n " ;
-    }
-
-}
-
-
-void searchByName()
-{
-    string name;
-    bool found = false;
-
-    //cout << "Enter the name of Student: ";
-    name = validateNameInput("Enter the name of Student: ");
-    //getline(cin, name);
-
-    cout << "Students Found: \n";
-
-
-    for(int i=0; i<studentCount; i++)
-    {
-        if(students[i].name == name)
-        {
-            displayStudent(i);
-            found = true;
-        }
-    }
-
-    if(found == false)
-    {
-        cout << "sorry! No student with this name found.";
-    }
-
-}
-
-
-void updateStudent()
+void StudentManager::updateStudent()
 {
     int id;
     int position;
 
     //cout << "Enter the ID of student you whose information you want to edit: ";
-    id = validateUserInput("Enter the ID of student you whose information you want to edit: ", 1, 10000);
+    id = validateUserInput("Enter the ID of student whose information you want to edit: ", 1, 10000);
     //cin >> id;
 
     int index = findStudent(id);
@@ -415,7 +467,7 @@ void updateStudent()
      
      {
      
-        displayStudent(index);
+        students[index].display();
 
         cout << "*note : please choose the field you want to update.\n";
         //cout << "Select what you want to edit: ";
@@ -430,7 +482,7 @@ void updateStudent()
             //cout << "Enter new name: ";
             newName = validateNameInput("Enter New Name: ");
             //getline(cin, newName);
-            students[index].name = newName;
+            students[index].setName(newName);
             saveStudentData();
             break;}
 
@@ -439,7 +491,7 @@ void updateStudent()
             //cout << "Enter new age: ";
             newAge = validateUserInput("Enter new age: ", 1, 150);
             //cin >> newAge;
-            students[index].age = newAge;
+            students[index].setAge(newAge);
             saveStudentData();
             break;}
 
@@ -448,7 +500,7 @@ void updateStudent()
             //cout << "Enter new GPA: ";
             newGPA = validateFloatInput("Enter new GPA: ", 0.0, 4.0);
             //cin >> newGPA;
-            students[index].gpa = newGPA;
+            students[index].setGpa(newGPA);
             saveStudentData();
             break;}
 
@@ -463,13 +515,13 @@ void updateStudent()
                 if(findStudent(newID) == -1)
                 {
     
-                    students[index].id = newID;
+                    students[index].setId(newID);
                     break;
                 }
 
-                else if(students[index].id == newID)
+                else if(students[index].getId() == newID)
                 {
-                    students[index].id = newID;
+                    students[index].setId(newID);
                     break;
                 }
 
@@ -496,13 +548,40 @@ void updateStudent()
     {
         cout<< "Student with this ID was not found.\n";
     }
-
-
-    
+  
 }
 
 
-void deleteStudent()
+void StudentManager::searchByName()
+{
+    string name;
+    bool found = false;
+
+    //cout << "Enter the name of Student: ";
+    name = validateNameInput("Enter the name of Student: ");
+    //getline(cin, name);
+
+    cout << "Students Found: \n";
+
+
+    for(int i=0; i<students.size(); i++)
+    {
+        if(students[i].getName() == name)
+        {
+            students[i].display();
+            found = true;
+        }
+    }
+
+    if(found == false)
+    {
+        cout << "sorry! No student with this name found.";
+    }
+
+}
+
+
+void StudentManager::deleteStudent()
 {
     int deleteID;
 
@@ -516,7 +595,7 @@ void deleteStudent()
     {
         int opt;
         cout << "You want to delete this student: \n";
-        displayStudent(index);
+        students[index].display();
         cout << "\n\n";
         cout << "Please confirm: \n";
         cout << "1. Yes \n";
@@ -528,12 +607,10 @@ void deleteStudent()
         switch (opt)
         {
         case 1:
-            for(int i=index; i < studentCount - 1 ; i++)
-            {
-                students[i] = students[i + 1];
-            }
-            studentCount--;
+            students.erase(students.begin() + index);
+
             saveStudentData();
+            cout << "Student deleted successfully.\n";
             break;
 
         case 2:
@@ -555,38 +632,10 @@ void deleteStudent()
 
 
 
-
-
-int main()
+void StudentManager::executeChoice(int choice)
 {
 
-    loadStudentData();
-
-
-
-    bool shouldExit = false;
-    int choice;
-    
-    do
-    {
-        cout << "\n---------------------------------------------\n";
-        cout << "STUDENT MANAGEMENT SYSTEM\n";
-        cout << "---------------------------------------------\n";
-        cout << "\n\n";
-        cout << "1. Add Student\n";
-        cout << "2. Display Students\n";
-        cout << "3. Search by ID Student\n";
-        cout << "4. Search Student by Name\n";
-        cout << "5. Update Student Information\n";
-        cout << "6. Delete Students\n";
-        cout << "7. Exit\n";
-        cout << "\n\n";
-
-
-        choice = validateUserInput("Enter Choice: ", 1, 7);
-
-
-        switch (choice)
+         switch (choice)
         {
         case 1:
             addStudents();
@@ -614,7 +663,6 @@ int main()
 
         case 7:
             cout << "Thankyou for visiting.";
-            shouldExit = true;
             break;
         
         
@@ -622,11 +670,59 @@ int main()
             cout << "Invalid! option, please choose a valid one.";
             break;
         }
-        
-    } while (shouldExit == false);
+
+
+}
+
+int StudentManager::getUserChoice()
+{
+     return validateUserInput("Enter your choice: ", 1, 7);
+}
+
+ void StudentManager::displayMenu()
+{
+
+        cout << "\n---------------------------------------------\n";
+        cout << "STUDENT MANAGEMENT SYSTEM\n";
+        cout << "---------------------------------------------\n";
+        cout << "\n\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display Students\n";
+        cout << "3. Search by ID Student\n";
+        cout << "4. Search Student by Name\n";
+        cout << "5. Update Student Information\n";
+        cout << "6. Delete Students\n";
+        cout << "7. Exit\n";
+        cout << "\n\n";
+
+}
+
+void StudentManager::run()
+{
+
+    loadStudentData();
+    bool isRunning = true;
     
-    return 0;
-    
+    while(isRunning)
+    {
+        displayMenu();
+
+        int choice = getUserChoice();
+
+        executeChoice(choice);
+
+        if(choice == 7)
+        {
+            isRunning = false;
+        }
+
+    }
 }
 
 
+int main()
+{
+    StudentManager manager;
+    manager.run();
+    return 0;
+}
