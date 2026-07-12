@@ -101,8 +101,11 @@ class StudentManager
         void updateStudent();
         void searchByName();
         void deleteStudent();
+        void executeChoice(int choice);
+        void displayMenu();
+        int getUserChoice();
+        void run();
         
-
 
 };
 
@@ -624,6 +627,96 @@ void StudentManager::deleteStudent()
     else
     {
         cout << "Student with this ID was not found.";
+    }
+}
+
+
+
+void StudentManager::executeChoice(int choice)
+{
+
+         switch (choice)
+        {
+        case 1:
+            addStudents();
+            break;
+
+        case 2:
+            displayStudents();
+            break;
+
+        case 3:
+            searchStudent();
+            break;
+        
+        case 4:
+            searchByName();
+            break;
+
+        case 5:
+            updateStudent();
+            break;
+
+        case 6:
+            deleteStudent();
+            break;
+
+        case 7:
+            cout << "Thankyou for visiting.";
+            return;
+            break;
+        
+        
+        default:
+            cout << "Invalid! option, please choose a valid one.";
+            break;
+        }
+
+
+}
+
+int StudentManager::getUserChoice()
+{
+     return validateUserInput("Enter your choice: ", 1, 7);
+}
+
+ void StudentManager::displayMenu()
+{
+
+        cout << "\n---------------------------------------------\n";
+        cout << "STUDENT MANAGEMENT SYSTEM\n";
+        cout << "---------------------------------------------\n";
+        cout << "\n\n";
+        cout << "1. Add Student\n";
+        cout << "2. Display Students\n";
+        cout << "3. Search by ID Student\n";
+        cout << "4. Search Student by Name\n";
+        cout << "5. Update Student Information\n";
+        cout << "6. Delete Students\n";
+        cout << "7. Exit\n";
+        cout << "\n\n";
+
+}
+
+void StudentManager::run()
+{
+
+    loadStudentData();
+    bool isRunning = true;
+    
+    while(isRunning)
+    {
+        displayMenu();
+
+        int choice = getUserChoice();
+
+        executeChoice(choice);
+
+        if(choice == 7)
+        {
+            isRunning = false;
+        }
+
     }
 }
 
